@@ -17,4 +17,8 @@ python3 clean.py --files
 python3 clean.py --dirs
 python3 clean.py --delete-files
 python3 clean.py --delete-dirs
+
+## Manual testing
+Run utilities in Linux or WSL environment.
+
 ```
