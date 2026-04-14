@@ -86,7 +86,11 @@ def delete_dirs(paths, root_path):
     errors = 0
     root_path = os.path.normpath(os.path.abspath(root_path))
 
-    for path in sorted(paths, key=lambda value: value.count(os.sep), reverse=True):
+    for path in sorted(
+        paths,
+        key=lambda value: value.count(os.sep),
+        reverse=True,
+    ):
         normalized_path = os.path.normpath(os.path.abspath(path))
         if normalized_path == root_path:
             print(
@@ -123,7 +127,12 @@ def resolve_actions(args):
         show_files = True
         show_dirs = True
 
-    return show_files, show_dirs, delete_files_flag, delete_dirs_flag
+    return (
+        show_files,
+        show_dirs,
+        delete_files_flag,
+        delete_dirs_flag,
+    )
 
 
 def main():
@@ -136,7 +145,12 @@ def main():
         print(f'Error: not a directory: {args.wd}', file=sys.stderr)
         raise SystemExit(1)
 
-    show_files, show_dirs, delete_files_flag, delete_dirs_flag = resolve_actions(args)
+    (
+        show_files,
+        show_dirs,
+        delete_files_flag,
+        delete_dirs_flag,
+    ) = resolve_actions(args)
 
     empty_files = find_empty_files(args.wd)
     empty_dirs = find_empty_dirs(args.wd)

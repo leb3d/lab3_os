@@ -20,12 +20,14 @@ def parse_args():
         help='Working directory to inspect. Default: current directory.',
     )
     parser.add_argument(
-        '-l', '--long',
+        '-l',
+        '--long',
         action='store_true',
         help='Show detailed information for each entry.',
     )
     parser.add_argument(
-        '-a', '--all',
+        '-a',
+        '--all',
         action='store_true',
         help='Show hidden entries except . and ..',
     )
@@ -76,7 +78,11 @@ def should_show(name, show_all):
 def list_directory(path, show_all=False, long_format=False):
     try:
         with os.scandir(path) as entries:
-            items = [entry for entry in entries if should_show(entry.name, show_all)]
+            items = [
+                entry
+                for entry in entries
+                if should_show(entry.name, show_all)
+            ]
     except FileNotFoundError:
         print(f'Error: directory not found: {path}', file=sys.stderr)
         return 1
@@ -111,9 +117,12 @@ def list_directory(path, show_all=False, long_format=False):
 
 def main():
     args = parse_args()
-    raise SystemExit(
-        list_directory(args.wd, show_all=args.all, long_format=args.long)
+    status = list_directory(
+        args.wd,
+        show_all=args.all,
+        long_format=args.long,
     )
+    raise SystemExit(status)
 
 
 if __name__ == '__main__':
