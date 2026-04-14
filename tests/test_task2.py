@@ -13,7 +13,7 @@ def test_find_empty_files_finds_only_empty_files(tmp_path):
     nonempty_file = tmp_path / 'data.txt'
 
     empty_file.touch()
-    nonempty_file.write_text('content', encoding='utf-8')
+    nonempty_file.write_text('data', encoding='utf-8')
 
     result = task2.find_empty_files(str(tmp_path))
 
@@ -27,7 +27,7 @@ def test_find_empty_dirs_finds_only_empty_directories(tmp_path):
 
     empty_dir.mkdir()
     nonempty_dir.mkdir()
-    (nonempty_dir / 'file.txt').write_text('content', encoding='utf-8')
+    (nonempty_dir / 'file.txt').write_text('data', encoding='utf-8')
 
     result = task2.find_empty_dirs(str(tmp_path))
 
@@ -35,23 +35,21 @@ def test_find_empty_dirs_finds_only_empty_directories(tmp_path):
     assert str(nonempty_dir) not in result
 
 
-def test_delete_files_removes_empty_file(tmp_path, capsys):
+def test_delete_files_removes_empty_file(tmp_path):
     empty_file = tmp_path / 'empty.txt'
     empty_file.touch()
 
-    task2.delete_files([str(empty_file)])
-    captured = capsys.readouterr()
+    errors = task2.delete_files([str(empty_file)])
 
+    assert errors == 0
     assert not empty_file.exists()
-    assert 'Removed file:' in captured.out
 
 
-def test_delete_dirs_removes_empty_directory(tmp_path, capsys):
+def test_delete_dirs_removes_empty_directory(tmp_path):
     empty_dir = tmp_path / 'empty_dir'
     empty_dir.mkdir()
 
-    task2.delete_dirs([str(empty_dir)])
-    captured = capsys.readouterr()
+    errors = task2.delete_dirs([str(empty_dir)], str(tmp_path))
 
+    assert errors == 0
     assert not empty_dir.exists()
-    assert 'Removed directory:' in captured.out
